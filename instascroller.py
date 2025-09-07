@@ -7,16 +7,31 @@ import sys
 import signal
 from typing import Optional
 
+# Import configuration
+try:
+    from config import *
+except ImportError:
+    # Default values if config.py doesn't exist
+    LISTEN_TIMEOUT = 0.5
+    PHRASE_LIMIT = 2
+    SCROLL_AMOUNT = 3
+    PAUSE_BETWEEN_ACTIONS = 0.1
+    CALIBRATION_DURATION = 2
+
 
 class InstagramVoiceController:
-    def __init__(self):
+    def __init__(self, listen_timeout=None, phrase_limit=None):
         self.recognizer = sr.Recognizer()
         self.microphone = sr.Microphone()
         self.is_running = True
         
+        # Listening configuration (use config file or defaults)
+        self.listen_timeout = listen_timeout or LISTEN_TIMEOUT
+        self.phrase_limit = phrase_limit or PHRASE_LIMIT
+        
         # Configure pyautogui
         pyautogui.FAILSAFE = True  # Move mouse to corner to stop
-        pyautogui.PAUSE = 0.1  # Small pause between actions
+        pyautogui.PAUSE = PAUSE_BETWEEN_ACTIONS
         
         # Command mappings
         self.commands = {
@@ -44,7 +59,7 @@ class InstagramVoiceController:
         try:
             print("Calibrating microphone for ambient noise...")
             with self.microphone as source:
-                self.recognizer.adjust_for_ambient_noise(source, duration=2)
+                self.recognizer.adjust_for_ambient_noise(source, duration=CALIBRATION_DURATION)
             print("Microphone calibrated successfully!")
             return True
         except Exception as e:
@@ -55,8 +70,8 @@ class InstagramVoiceController:
         # Listen for voice command and return recognized text
         try:
             with self.microphone as source:
-                # Listen for audio with timeout
-                audio = self.recognizer.listen(source, timeout=1, phrase_time_limit=3)
+                # Listen for audio with configurable timeout
+                audio = self.recognizer.listen(source, timeout=self.listen_timeout, phrase_time_limit=self.phrase_limit)
                 
             # Recognize speech using Google Web Speech API
             command = self.recognizer.recognize_google(audio).lower()
@@ -79,12 +94,12 @@ class InstagramVoiceController:
     def scroll_down(self):
         #Scroll down on Instagram
         print("Scrolling down...")
-        pyautogui.scroll(-500)  # Scroll down
+        pyautogui.scroll(-SCROLL_AMOUNT)  # Scroll down
         
     def scroll_up(self):
         #Scroll up on Instagram
         print("Scrolling up...")
-        pyautogui.scroll(500)  # Scroll up
+        pyautogui.scroll(SCROLL_AMOUNT)  # Scroll up
         
     def stop_session(self):
         #Stop the voice control session
@@ -113,6 +128,9 @@ class InstagramVoiceController:
         print("=" * 60)
         print("Voice-Controlled Instagram Autoscroller MVP")
         print("=" * 60)
+        print(f"\nListening Configuration:")
+        print(f"- Timeout: {self.listen_timeout}s (wait time for speech)")
+        print(f"- Phrase limit: {self.phrase_limit}s (max command length)")
         print("\nInstructions:")
         print("1. Open Instagram in your desktop browser")
         print("2. Make sure Instagram is the active window")
@@ -150,6 +168,7 @@ class InstagramVoiceController:
 def main():
     #Main entry point
     try:
+        # Use configuration from config.py or defaults
         controller = InstagramVoiceController()
         controller.run()
     except Exception as e:
