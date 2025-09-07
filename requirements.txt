@@ -1,0 +1,10 @@
+SpeechRecognition==3.10.0
+pyautogui==0.9.54
+
+# PyAudio installation notes for Windows:
+# If you get compilation errors, use this pre-compiled wheel instead:
+# pip install https://download.lfd.uci.edu/pythonlibs/archived/pyaudio-0.2.11-cp311-cp311-win_amd64.whl
+# 
+# For other Python versions, find the appropriate wheel at:
+# https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
+pyaudio==0.2.11
