@@ -21,7 +21,7 @@ A Voice-Controlled Instagram Autoscroller MVP - Control Instagram scrolling hand
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/Instascroller.git
+git clone https://github.com/4ppleSA0CE/Instascroller.git
 cd Instascroller
 ```
 
