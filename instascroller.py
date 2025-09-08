@@ -43,6 +43,16 @@ class InstagramVoiceController:
             'stop': self.stop_session,
             'quit': self.stop_session,
             'exit': self.stop_session
+            'like': self.like_post,
+            '''
+            'comment': self.comment_post,
+            'share': self.share_post,
+            'save': self.save_post,
+            'unfollow': self.unfollow_post,
+            'follow': self.follow_post,
+            'message': self.message_post,
+            'search': self.search_post,
+            '''
         }
         
         # Setup signal handler for graceful shutdown
@@ -105,6 +115,15 @@ class InstagramVoiceController:
         #Stop the voice control session
         print("Stopping session...")
         self.is_running = False
+
+    def like_post(self):
+        #Like the post
+        print("Liking post...")
+        pyautogui.click(100, 100)
+        pyautogui.click(100, 100)
+        
+    def comment_post(self):
+        #Comment on the post
         
     def process_command(self, command: str) -> bool:
         #Process voice command and execute corresponding action
@@ -153,7 +172,7 @@ class InstagramVoiceController:
                 if command:
                     if not self.process_command(command):
                         print(f"Unknown command: '{command}'")
-                        print("Available commands: scroll, down, up, stop")
+                        print("Available commands: scroll, down, up, stop, like")
                         
             except KeyboardInterrupt:
                 print("\n\nReceived interrupt signal. Shutting down...")
