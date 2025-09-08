@@ -52,7 +52,7 @@ class InstagramVoiceController:
             'follow': self.follow_post,
             'message': self.message_post,
             'search': self.search_post,
-            '''
+            ''' 
         }
         
         # Setup signal handler for graceful shutdown
