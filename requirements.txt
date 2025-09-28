@@ -8,3 +8,12 @@ pyautogui==0.9.54
 # For other Python versions, find the appropriate wheel at:
 # https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
 pyaudio==0.2.11
+
+# OpenCV for computer vision and image processing
+opencv-python>=4.8.0
+opencv-contrib-python>=4.8.0
+
+# Screen capture and image processing
+mss>=9.0.0
+numpy>=1.26.0
+Pillow>=10.0.0

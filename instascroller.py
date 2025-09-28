@@ -5,7 +5,11 @@ import pyautogui
 import time
 import sys
 import signal
-from typing import Optional
+from typing import Optional, List, Tuple
+import cv2
+import mss
+import numpy as np
+
 
 # Import configuration
 try:
@@ -42,21 +46,36 @@ class InstagramVoiceController:
             'scroll up': self.scroll_up,
             'stop': self.stop_session,
             'quit': self.stop_session,
-            'exit': self.stop_session
-            'like': self.like_post,
-            '''
-            'comment': self.comment_post,
-            'share': self.share_post,
-            'save': self.save_post,
-            'unfollow': self.unfollow_post,
-            'follow': self.follow_post,
-            'message': self.message_post,
-            'search': self.search_post,
-            ''' 
+            'exit': self.stop_session,
+            'like': self.like_post
+            # Future commands:
+            # 'comment': self.comment_post,
+            # 'share': self.share_post,
+            # 'save': self.save_post,
+            # 'unfollow': self.unfollow_post,
+            # 'follow': self.follow_post,
+            # 'message': self.message_post,
+            # 'search': self.search_post, 
         }
         
         # Setup signal handler for graceful shutdown
         signal.signal(signal.SIGINT, self.signal_handler)
+
+        # Setup screenshot capture
+        self.sct = mss.mss()
+    
+    def capture_screen(self, region: Optional[Tuple[int, int, int, int]] = None) -> np.ndarray:
+        if region:
+            monitor = {"top": region[1], "left": region[0], "width": region[2], "height": region[3]}
+
+        else:
+            monitor = self.sct.monitors[1]  # Primary monitor
+            
+        screenshot = self.sct.grab(monitor)
+        img = np.array(screenshot)
+        return cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
+
+    def mo
         
     def signal_handler(self, signum, frame):
 
@@ -124,6 +143,7 @@ class InstagramVoiceController:
         
     def comment_post(self):
         #Comment on the post
+        pass
         
     def process_command(self, command: str) -> bool:
         #Process voice command and execute corresponding action
